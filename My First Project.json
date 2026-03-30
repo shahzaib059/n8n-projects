@@ -1,0 +1,338 @@
+{
+  "name": "My First Project",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1888,
+        -512
+      ],
+      "id": "3aaa3cec-dcf5-4570-b9de-044ddb184d68",
+      "name": "When chat message received",
+      "webhookId": "8ebf239f-1684-4914-875a-3c31d3e68920"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\"You are a helpful assistant. You have two tools:\n\nTo read data from the existing book list.\n\nTo ADD a new book and quantity to a second Google Sheet.\nIf a user says they want to buy or add a book, ask them for the 'Book Name' and 'Quantity' if they haven't provided it. Once you have both, use the 'Append' tool to save it to the sheet.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1600,
+        -512
+      ],
+      "id": "08f7eb70-5474-4b66-91cb-fdbd97b87480",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -2176,
+        -560
+      ],
+      "id": "99cdf2be-15f6-453e-b477-2a550cdaceb4",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "1kz8mmdtp2v9nzpA",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1648,
+        -240
+      ],
+      "id": "80f030ff-201b-44f1-aba9-fc054acc955c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get a record in Airtable or Search a record in Airtable",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appTUNBn0l4FKag2x",
+          "mode": "list",
+          "cachedResultName": "Book Store Inventory Tracker",
+          "cachedResultUrl": "https://airtable.com/appTUNBn0l4FKag2x"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldD7a3V5UjON6Pp",
+          "mode": "list",
+          "cachedResultName": "Books",
+          "cachedResultUrl": "https://airtable.com/appTUNBn0l4FKag2x/tbldD7a3V5UjON6Pp"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        -1168,
+        -512
+      ],
+      "id": "7345cfed-f6c6-4e01-80b4-06a3ee981ded",
+      "name": "Search records in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "xkP56KPrU33ygEMf",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -2192,
+        -352
+      ],
+      "id": "240bd9bf-4974-49d3-8f04-b476386b71f3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "9IlnWlEbg1T8DpmD",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1wmMDwfSD_bsVinfPEBRlV7avAzWsC0_sdSqMzFOzn-g",
+          "mode": "list",
+          "cachedResultName": "n8n testing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wmMDwfSD_bsVinfPEBRlV7avAzWsC0_sdSqMzFOzn-g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wmMDwfSD_bsVinfPEBRlV7avAzWsC0_sdSqMzFOzn-g/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -1216,
+        -240
+      ],
+      "id": "09cf1d27-cb8d-432a-9a9b-627599995c91",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QmVHgmZgqoUhyqfP",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        -256
+      ],
+      "id": "5cf16e1e-1aa2-4609-93c8-fb2b6abf376a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vEMjUGvPUyTt3eI7",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1wmMDwfSD_bsVinfPEBRlV7avAzWsC0_sdSqMzFOzn-g",
+          "mode": "list",
+          "cachedResultName": "n8n testing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wmMDwfSD_bsVinfPEBRlV7avAzWsC0_sdSqMzFOzn-g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 420549553,
+          "mode": "list",
+          "cachedResultName": "new",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wmMDwfSD_bsVinfPEBRlV7avAzWsC0_sdSqMzFOzn-g/edit#gid=420549553"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Book Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Book_Name', ``, 'string') }}",
+            "Quantity": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Quantity', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Book Name",
+              "displayName": "Book Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Quantity",
+              "displayName": "Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -1456,
+        -304
+      ],
+      "id": "d4d37464-93ee-46b9-9ac4-1bb56c6321bb",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QmVHgmZgqoUhyqfP",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records in Airtable": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e7cd5182-a4c8-47bb-8b65-6676f78d09fd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e04debcf2698cc6bda94d2c46890e0375cab2abd3970009e8f984a67c043eed8"
+  },
+  "id": "zMcsl3rsI1Jf4SrX",
+  "tags": []
+}
